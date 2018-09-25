@@ -1,0 +1,23 @@
+---
+# tasks file for mariuszczyz.centos-logrotate-on-steroids
+
+- name: Make sure xz is installed
+  yum:
+    name: xz
+    state: present
+
+- name: Deploy custom logrotate configuration
+  copy: 
+    src: logrotate.conf 
+    dest: /etc/logrotate.conf 
+    owner: root 
+    group: root 
+    mode: 0644
+
+- name: Deploy custom syslog configuration
+  copy: 
+    src: syslog-logrotate.conf 
+    dest: /etc/logrotate.d/syslog 
+    owner: root 
+    group: root 
+    mode: 0644

@@ -28,7 +28,7 @@ In playbook.yml:
 ```bash
 - hosts: servers
   roles:
-    - { role: mariuszczyz.centos-logrotation-on-steroidss, tags: ['logrotation-on-steroids'] }
+    - { role: mariuszczyz.centos-logrotation-on-steroids, tags: ['logrotation-on-steroids'] }
 ```
 
 Before any SSH hardening configuration changes are applied this ansible-playbook command should be ran (as root):

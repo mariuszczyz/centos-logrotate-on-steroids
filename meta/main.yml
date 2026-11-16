@@ -1,15 +1,28 @@
 ---
 dependencies: []
+
 galaxy_info:
   author: Mariusz Czyz
-  description: CentOS 7 logrotate improvements
-  license: BSD
-  min_ansible_version: 2.4
+  # Galaxy requires underscore role names. The historical hyphenated name
+  # (centos-logrotate-on-steroids) stays valid for existing installs.
+  role_name: centos_logrotate_on_steroids
+  namespace: mariuszczyz
+  description: >-
+    High-compression log rotation for Enterprise Linux and Fedora:
+    daily rotation, xz -9 compression, 30-day retention.
+  license: MIT
+  min_ansible_version: "2.15"
   platforms:
     - name: EL
       versions:
-        - 7
+        - "9"
+        - "10"
+    - name: Fedora
+      versions:
+        - "all"
   galaxy_tags:
-    - centos
-    - system
     - logrotate
+    - logging
+    - system
+    - centos
+    - fedora

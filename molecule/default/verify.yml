@@ -1,0 +1,51 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+  tasks:
+    - name: Gather package facts
+      ansible.builtin.package_facts:
+        manager: dnf
+    - name: Assert that logrotate and xz are installed
+      ansible.builtin.assert:
+        that:
+          - "'logrotate' in ansible_facts.packages"
+          - "'xz' in ansible_facts.packages"
+
+    - name: Check the rendered main configuration
+      ansible.builtin.stat:
+        path: /etc/logrotate.conf
+      register: main_conf
+    - name: Read the rendered main configuration
+      ansible.builtin.slurp:
+        path: /etc/logrotate.conf
+      register: main_conf_file
+    - name: Assert the main configuration
+      ansible.builtin.assert:
+        that:
+          - main_conf.stat.exists
+          - main_conf.stat.mode == "0644"
+          - "'compresscmd /usr/bin/xz' in (main_conf_file.content | b64decode)"
+
+    - name: Check the rendered rsyslog configuration
+      ansible.builtin.stat:
+        path: /etc/logrotate.d/rsyslog
+      register: syslog_conf
+    - name: Read the rendered rsyslog configuration
+      ansible.builtin.slurp:
+        path: /etc/logrotate.d/rsyslog
+      register: syslog_conf_file
+    - name: Assert the rsyslog configuration
+      ansible.builtin.assert:
+        that:
+          - syslog_conf.stat.exists
+          - "'systemctl kill -s HUP rsyslog.service' in (syslog_conf_file.content | b64decode)"
+
+    - name: Parse the configuration with a logrotate dry run
+      ansible.builtin.command: logrotate -d /etc/logrotate.conf
+      changed_when: false
+      register: logrotate_check
+    - name: Assert the dry run reports no errors
+      ansible.builtin.assert:
+        that:
+          - logrotate_check.rc == 0

@@ -1,0 +1,11 @@
+{{ logrotate_frequency }}
+rotate {{ logrotate_rotate }}
+create
+{% if logrotate_compress %}
+compress
+compresscmd {{ logrotate_compresscmd }}
+compressoptions {{ logrotate_compressoptions }}
+compressext {{ logrotate_compressext }}
+uncompresscmd {{ logrotate_uncompresscmd }}
+{% endif %}
+include /etc/logrotate.d

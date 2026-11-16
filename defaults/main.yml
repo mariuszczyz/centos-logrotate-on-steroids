@@ -1,2 +1,10 @@
 ---
 # defaults file for mariuszczyz.centos-logrotate-on-steroids
+logrotate_frequency: daily
+logrotate_rotate: 30
+logrotate_compress: true
+logrotate_compresscmd: /usr/bin/xz
+logrotate_compressoptions: "-z -9"
+logrotate_compressext: .xz
+logrotate_uncompresscmd: /usr/bin/unxz
+logrotate_manage_syslog: true

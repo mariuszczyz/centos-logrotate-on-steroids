@@ -1,23 +1,26 @@
 ---
 # tasks file for mariuszczyz.centos-logrotate-on-steroids
 
-- name: Make sure xz is installed
-  yum:
-    name: xz
+- name: Ensure logrotate and xz are installed
+  ansible.builtin.package:
+    name:
+      - logrotate
+      - xz
     state: present
 
-- name: Deploy custom logrotate configuration
-  copy: 
-    src: logrotate.conf 
-    dest: /etc/logrotate.conf 
-    owner: root 
-    group: root 
-    mode: 0644
+- name: Render main logrotate configuration
+  ansible.builtin.template:
+    src: logrotate.conf.j2
+    dest: /etc/logrotate.conf
+    owner: root
+    group: root
+    mode: "0644"
 
-- name: Deploy custom syslog configuration
-  copy: 
-    src: syslog-logrotate.conf 
-    dest: /etc/logrotate.d/syslog 
-    owner: root 
-    group: root 
-    mode: 0644
+- name: Render rsyslog logrotate configuration
+  ansible.builtin.template:
+    src: rsyslog-logrotate.conf.j2
+    dest: /etc/logrotate.d/rsyslog
+    owner: root
+    group: root
+    mode: "0644"
+  when: logrotate_manage_syslog

@@ -1,0 +1,48 @@
+---
+argument_specs:
+  main:
+    short_description: Role parameters for log rotation tuning.
+    description:
+      - All defaults reproduce the historical static configuration.
+    options:
+      logrotate_frequency:
+        description: Rotation interval for the main and rsyslog stanzas.
+        type: str
+        required: false
+        choices: ["daily", "weekly", "monthly"]
+        default: daily
+      logrotate_rotate:
+        description: Number of rotated archives to keep.
+        type: int
+        required: false
+        default: 30
+      logrotate_compress:
+        description: Compress rotated logs.
+        type: bool
+        required: false
+        default: true
+      logrotate_compresscmd:
+        description: Compression binary.
+        type: str
+        required: false
+        default: /usr/bin/xz
+      logrotate_compressoptions:
+        description: Options passed to the compression binary.
+        type: str
+        required: false
+        default: "-z -9"
+      logrotate_compressext:
+        description: Extension of compressed archives.
+        type: str
+        required: false
+        default: .xz
+      logrotate_uncompresscmd:
+        description: Decompression binary.
+        type: str
+        required: false
+        default: /usr/bin/unxz
+      logrotate_manage_syslog:
+        description: Manage the rsyslog logrotate snippet.
+        type: bool
+        required: false
+        default: true

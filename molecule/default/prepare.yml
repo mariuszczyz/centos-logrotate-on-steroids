@@ -1,0 +1,12 @@
+---
+- name: Prepare
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Install systemd when missing
+      ansible.builtin.raw: /usr/bin/bash -c "test -x /usr/sbin/init || dnf -y install systemd"
+      changed_when: true
+
+    - name: Initialize the machine ID
+      ansible.builtin.raw: /usr/bin/bash -c "test -s /etc/machine-id || systemd-machine-id-setup"
+      changed_when: true

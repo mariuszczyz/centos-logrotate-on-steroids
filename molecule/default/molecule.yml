@@ -1,0 +1,129 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: podman
+platforms:
+  - name: rocky-9
+    image: docker.io/rockylinux/rockylinux:9
+    command: /usr/sbin/init
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    extra_opts:
+      - --stop-signal=SIGRTMIN+3
+      - --tmpfs=/run:rw,nosuid,nodev,noexec,mode=1777
+      - --tmpfs=/run/lock:rw,nosuid,nodev,noexec,mode=1777
+      - --tmpfs=/tmp:rw,nosuid,nodev,mode=1777
+    env:
+      container: oci
+  - name: almalinux-9
+    image: docker.io/almalinux:9
+    command: /usr/sbin/init
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    extra_opts:
+      - --stop-signal=SIGRTMIN+3
+      - --tmpfs=/run:rw,nosuid,nodev,noexec,mode=1777
+      - --tmpfs=/run/lock:rw,nosuid,nodev,noexec,mode=1777
+      - --tmpfs=/tmp:rw,nosuid,nodev,mode=1777
+    env:
+      container: oci
+  - name: rocky-10
+    image: docker.io/rockylinux/rockylinux:10
+    command: /usr/sbin/init
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    extra_opts:
+      - --stop-signal=SIGRTMIN+3
+      - --tmpfs=/run:rw,nosuid,nodev,noexec,mode=1777
+      - --tmpfs=/run/lock:rw,nosuid,nodev,noexec,mode=1777
+      - --tmpfs=/tmp:rw,nosuid,nodev,mode=1777
+    env:
+      container: oci
+  - name: almalinux-10
+    image: docker.io/almalinux:10
+    command: /usr/sbin/init
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    extra_opts:
+      - --stop-signal=SIGRTMIN+3
+      - --tmpfs=/run:rw,nosuid,nodev,noexec,mode=1777
+      - --tmpfs=/run/lock:rw,nosuid,nodev,noexec,mode=1777
+      - --tmpfs=/tmp:rw,nosuid,nodev,mode=1777
+    env:
+      container: oci
+  - name: centos-stream-9
+    image: quay.io/centos/centos:stream9
+    command: /usr/sbin/init
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    extra_opts:
+      - --stop-signal=SIGRTMIN+3
+      - --tmpfs=/run:rw,nosuid,nodev,noexec,mode=1777
+      - --tmpfs=/run/lock:rw,nosuid,nodev,noexec,mode=1777
+      - --tmpfs=/tmp:rw,nosuid,nodev,mode=1777
+    env:
+      container: oci
+  - name: centos-stream-10
+    image: quay.io/centos/centos:stream10
+    command: /usr/sbin/init
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    extra_opts:
+      - --stop-signal=SIGRTMIN+3
+      - --tmpfs=/run:rw,nosuid,nodev,noexec,mode=1777
+      - --tmpfs=/run/lock:rw,nosuid,nodev,noexec,mode=1777
+      - --tmpfs=/tmp:rw,nosuid,nodev,mode=1777
+    env:
+      container: oci
+  - name: fedora-44
+    image: quay.io/fedora/fedora:44
+    command: /usr/sbin/init
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    extra_opts:
+      - --stop-signal=SIGRTMIN+3
+      - --tmpfs=/run:rw,nosuid,nodev,noexec,mode=1777
+      - --tmpfs=/run/lock:rw,nosuid,nodev,noexec,mode=1777
+      - --tmpfs=/tmp:rw,nosuid,nodev,mode=1777
+    env:
+      container: oci
+  - name: fedora-45
+    image: quay.io/fedora/fedora:45
+    command: /usr/sbin/init
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    extra_opts:
+      - --stop-signal=SIGRTMIN+3
+      - --tmpfs=/run:rw,nosuid,nodev,noexec,mode=1777
+      - --tmpfs=/run/lock:rw,nosuid,nodev,noexec,mode=1777
+      - --tmpfs=/tmp:rw,nosuid,nodev,mode=1777
+    env:
+      container: oci
+provisioner:
+  name: ansible
+  playbooks:
+    prepare: prepare.yml
+verifier:
+  name: ansible
+scenario:
+  name: default
+  test_sequence:
+    - dependency
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge
+    - idempotence
+    - check
+    - verify
+    - destroy

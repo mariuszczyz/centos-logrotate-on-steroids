@@ -1,0 +1,2 @@
+molecule>=6.0
+molecule-plugins[podman]>=23.6

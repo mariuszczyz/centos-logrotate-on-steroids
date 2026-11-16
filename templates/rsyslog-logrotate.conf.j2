@@ -1,0 +1,21 @@
+/var/log/cron
+/var/log/maillog
+/var/log/messages
+/var/log/secure
+/var/log/spooler
+{
+    {{ logrotate_frequency }}
+    rotate {{ logrotate_rotate }}
+{% if logrotate_compress %}
+    compress
+    compresscmd {{ logrotate_compresscmd }}
+    compressoptions {{ logrotate_compressoptions }}
+    compressext {{ logrotate_compressext }}
+    uncompresscmd {{ logrotate_uncompresscmd }}
+{% endif %}
+    missingok
+    sharedscripts
+    postrotate
+        /usr/bin/systemctl kill -s HUP rsyslog.service >/dev/null 2>&1 || true
+    endscript
+}
